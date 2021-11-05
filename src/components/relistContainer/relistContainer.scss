@@ -1,0 +1,27 @@
+.relist-container {
+  width: 100%;
+
+  &:not(.relist-container__popup) .button {
+    float: right;
+  }
+
+  &__popup {
+    display: flex;
+    box-shadow: 5px 5px 25px 0 rgb(46 61 73 / 20%);
+    flex-direction: column;
+    height: auto;
+    background-color: var(--white);
+    border-radius: 16px;
+    margin-bottom: 16px;
+    opacity: 0;
+    transition: 0.3s;
+
+    &__header,
+    &__content {
+      padding: 16px;
+    }
+    &--show {
+      opacity: 1;
+    }
+  }
+}
