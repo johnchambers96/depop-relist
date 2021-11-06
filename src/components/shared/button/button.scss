@@ -41,11 +41,18 @@
     }
   }
 
-  &:hover {
-    background-color: var(--primary-dark);
+  &:not(.button--disabled) {
+    &:hover {
+      background-color: var(--primary-dark);
+    }
   }
 
   &--full-width {
     width: 100% !important;
+  }
+
+  &--disabled {
+    cursor: not-allowed;
+    opacity: 0.75;
   }
 }

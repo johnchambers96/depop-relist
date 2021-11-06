@@ -9,6 +9,7 @@ export type ButtonProps = {
   className?: string;
   icon?: React.ReactNode;
   type: "button" | "submit" | "reset";
+  isDisabled?: boolean;
 } & ComponentPropsWithoutRef<"button">;
 
 export const Button: FC<ButtonProps> = ({
@@ -17,12 +18,19 @@ export const Button: FC<ButtonProps> = ({
   buttonSize = "auto",
   type,
   className,
+  isDisabled = false,
 }) => {
   return (
     <button
-      className={joinStrings(["button", `button--${buttonSize}`, className])}
+      className={joinStrings([
+        "button",
+        `button--${buttonSize}`,
+        isDisabled && "button--disabled",
+        className,
+      ])}
       type={type}
-      onClick={onClick && onClick}
+      disabled={isDisabled}
+      onClick={onClick && !isDisabled ? onClick : undefined}
     >
       {children}
     </button>

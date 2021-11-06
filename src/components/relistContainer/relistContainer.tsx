@@ -13,6 +13,7 @@ import "./relistContainer.scss";
  */
 export const RelistContainer: FC = () => {
   const user = useContext(UserContext);
+  const [isUpdating, setIsUpdating] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleOnClick = () => {
@@ -22,18 +23,18 @@ export const RelistContainer: FC = () => {
   const handleRelistItems = async () => {
     if (user?.userData?.userId) {
       try {
-        const products = await (
+        setIsUpdating(true);
+        const products = (
           await fetchProducts(user.userData.userId)
-        ).products;
-
+        ).products.filter((product) => product.status === "ONSALE");
         for (const product of products) {
-          if (product.status === "ONSALE") {
-            const detailedProduct = await fetchProduct(product.slug);
-            updateProducts(product.slug, detailedProduct);
-          }
+          const detailedProduct = await fetchProduct(product.slug);
+          await updateProducts(product.slug, detailedProduct);
         }
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsUpdating(false);
       }
     } else {
       console.error("Please login");
@@ -48,9 +49,10 @@ export const RelistContainer: FC = () => {
           isOpen && "relist-container__popup--show",
         ])}
       >
-        <header className="relist-container__popup__header">header here</header>
+        <header className="relist-container__popup__header">{`Welcome back, ${user?.userData?.fName}!`}</header>
         <main className="relist-container__popup__content">
           <Button
+            isDisabled={isUpdating}
             className="button--full-width"
             type="button"
             buttonSize="large"

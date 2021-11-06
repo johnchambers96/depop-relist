@@ -9,9 +9,9 @@ import Cookies from "js-cookie";
 export const fetchProducts = async (
   userId: number
 ): Promise<productsResponse> => {
-  return fetch(`https://webapi.depop.com/api/v1/shop/${userId}/products`).then(
-    (res) => res.json().catch((err) => new Error(err))
-  );
+  return fetch(
+    `https://webapi.depop.com/api/v1/shop/${userId}/products?limit=2000`
+  ).then((res) => res.json().catch((err) => new Error(err)));
 };
 
 /**
