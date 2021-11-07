@@ -47,20 +47,12 @@ export type detailedProductType = {
     shippingProviderId: string;
   }[];
   variantSetId: number;
-  variants: Record<keyof number, number>;
+  variants: Record<number, number>;
 };
 
 export type productType = {
   id: number;
-  preview: {
-    150: string;
-    210: string;
-    320: string;
-    480: string;
-    640: string;
-    960: string;
-    1280: string;
-  };
+  preview:  Record<number, string>;
   price: {
     currency_name: string;
     currency_symbol: string;

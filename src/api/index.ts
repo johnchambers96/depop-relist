@@ -1,4 +1,4 @@
-import { productsResponse, productType } from "../types";
+import { productsResponse, productType, storedUser } from "../types";
 import Cookies from "js-cookie";
 
 /**
@@ -60,7 +60,7 @@ export const updateProducts = async (
  * @param username
  * @returns
  */
-export const fetchUser = async (username: string) => {
+export const fetchUser = async (username: string): Promise<storedUser> => {
   return fetch(`https://webapi.depop.com/api/v1/shop/${username}/`)
     .then((res) => res.json())
     .catch((err) => console.error(err));
