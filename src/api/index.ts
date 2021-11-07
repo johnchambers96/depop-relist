@@ -7,10 +7,14 @@ import Cookies from "js-cookie";
  * @returns productsResponse
  */
 export const fetchProducts = async (
-  userId: number
+  userId: number,
+  offSetId?: string
 ): Promise<productsResponse> => {
+  // TODO Clean up how query parameters are added
   return fetch(
-    `https://webapi.depop.com/api/v1/shop/${userId}/products?limit=2000`
+    `https://webapi.depop.com/api/v1/shop/${userId}/products?limit=24${
+      offSetId ? `&offset_id=${offSetId}` : ""
+    }`
   ).then((res) => res.json().catch((err) => new Error(err)));
 };
 
@@ -49,4 +53,15 @@ export const updateProducts = async (
   })
     .then((res) => res.json())
     .catch((err) => new Error(err));
+};
+
+/**
+ * Fetch user's shop information
+ * @param username
+ * @returns
+ */
+export const fetchUser = async (username: string) => {
+  return fetch(`https://webapi.depop.com/api/v1/shop/${username}/`)
+    .then((res) => res.json())
+    .catch((err) => console.error(err));
 };

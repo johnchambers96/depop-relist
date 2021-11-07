@@ -3,19 +3,21 @@ export * from "./api";
  * User data stored in session storage
  */
 export type storedUser = {
-  country: string;
-  email: string;
-  fName: string;
+  bio: string;
+  first_name: string;
   followers: number;
   following: number;
-  lName: string;
-  lang: string;
-  picture: string;
-  sellingCount: number;
-  soldCount: number;
-  terms: boolean;
-  userId: number;
+  id: number;
+  initials: string;
+  items_sold: number;
+  last_name: string;
+  last_seen: string;
+  picture: Record<number, string>;
+  reviews_rating: number;
+  reviews_total: number;
   username: string;
+  verified: boolean;
+  website: string;
 };
 
 export type detailedProductType = {

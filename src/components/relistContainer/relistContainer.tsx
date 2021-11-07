@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
 import { fetchProducts, updateProducts, fetchProduct } from "../../api";
 import "./relistContainer.scss";
+import { productsResponse, productType } from "../../types";
 
 /**
  * Component to handle the logic of shared components
@@ -21,12 +22,26 @@ export const RelistContainer: FC = () => {
   };
 
   const handleRelistItems = async () => {
-    if (user?.userData?.userId) {
+    if (user?.userData?.id) {
       try {
         setIsUpdating(true);
-        const products = (
-          await fetchProducts(user.userData.userId)
-        ).products.filter((product) => product.status === "ONSALE");
+        let end: boolean = false;
+        let lastOffsetId: string | undefined = undefined;
+        let products: productType[] = [];
+        // fetch until we have a full list of products in store
+        while (end === false) {
+          const fetchedProducts: productsResponse = await fetchProducts(
+            user.userData.id,
+            lastOffsetId
+          );
+          const filtered = fetchedProducts.products.filter(
+            (product) => product.status === "ONSALE"
+          );
+          products.push(...filtered);
+          lastOffsetId = fetchedProducts.meta.last_offset_id;
+          if (fetchedProducts.meta.end) end = true;
+        }
+        // Update each individual item which is currently on sale
         for (const product of products) {
           const detailedProduct = await fetchProduct(product.slug);
           await updateProducts(product.slug, detailedProduct);
@@ -49,17 +64,23 @@ export const RelistContainer: FC = () => {
           isOpen && "relist-container__popup--show",
         ])}
       >
-        <header className="relist-container__popup__header">{`Welcome back, ${user?.userData?.fName}!`}</header>
+        {user?.userData && (
+          <header className="relist-container__popup__header">{`Welcome back, ${user?.userData?.first_name}!`}</header>
+        )}
         <main className="relist-container__popup__content">
-          <Button
-            isDisabled={isUpdating}
-            className="button--full-width"
-            type="button"
-            buttonSize="large"
-            onClick={handleRelistItems}
-          >
-            Relist Unsold Items
-          </Button>
+          {user?.userData ? (
+            <Button
+              isDisabled={isUpdating}
+              className="button--full-width"
+              type="button"
+              buttonSize="large"
+              onClick={handleRelistItems}
+            >
+              Relist Unsold Items
+            </Button>
+          ) : (
+            <p>Please log into Depop</p>
+          )}
         </main>
       </section>
       <ActionButton type="button" buttonSize="large" onClick={handleOnClick}>

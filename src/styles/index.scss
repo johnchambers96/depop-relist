@@ -1,5 +1,3 @@
-@import "./reset.scss";
-
 :root {
   --primary: #0360a5;
   --primary-dark: #024373;
@@ -15,8 +13,4 @@
   z-index: 100;
   right: 0;
   padding: 16px;
-}
-
-.border-radius-50 {
-  border-radius: 50%;
 }
