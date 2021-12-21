@@ -1,12 +1,15 @@
 import React from "react";
-import { RelistContainer } from "./components";
+import { Login, Container } from "./components";
 import { UserProvider } from "./context";
 import "./styles/index.scss";
 
 const App = () => {
   return (
     <UserProvider>
-      <RelistContainer />
+      <Container>
+        <Login />
+      </Container>
+      {/* <RelistContainer /> */}
     </UserProvider>
   );
 };

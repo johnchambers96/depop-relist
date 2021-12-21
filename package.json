@@ -1,5 +1,5 @@
 {
-  "name": "chrome-extension-react-typescript-boilerplate",
+  "name": "depop-relist",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -32,6 +32,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "firebase": "^9.6.1",
     "js-cookie": "^3.0.1",
     "react": "17.0.0",
     "react-dom": "17.0.0",

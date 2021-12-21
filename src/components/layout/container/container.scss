@@ -1,0 +1,22 @@
+.container {
+  box-shadow: 5px 5px 25px 0 rgb(46 61 73 / 20%);
+  &__header {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 0 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    &--active {
+      border-radius: 4px 4px 0 0;
+    }
+  }
+  &__child {
+    height: 400px;
+    background-color: var(--white);
+    padding: 1rem;
+  }
+}
