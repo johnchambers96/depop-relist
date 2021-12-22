@@ -1,0 +1,31 @@
+.wrapper {
+  height: 100%;
+
+  .__form-wrapper {
+    height: 100%;
+    display: flex;
+
+    flex-direction: column;
+    justify-content: space-between;
+
+    .__inputs {
+      display: flex;
+      flex-direction: column;
+
+      .__email {
+        margin-bottom: 5%;
+      }
+    }
+  }
+
+  .__actions {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .__login {
+      margin-bottom: 3%;
+    }
+  }
+}
+
