@@ -1,36 +1,42 @@
 import React, { FC, useState } from "react";
 import { useEffect } from "react";
-import { storedUser } from "../types";
+import { StoredUser, SessionUser } from "../types";
 import { fetchUser } from "../api";
-import { findUsername } from "../utils";
+import Cookies from "js-cookie";
 
 type UserContextType = {
-  userData: storedUser | null;
+  userData: StoredUser | null;
 };
 
 export const UserContext = React.createContext<UserContextType | null>(null);
 
 export const UserProvider: FC = ({ children }) => {
-  const [user, setUser] = useState<storedUser | null>(null);
+  const [user, setUser] = useState<StoredUser | null>(null);
 
-  async function handleFetchUsers(username: string) {
+  const fetchUserData = async (username: string) => {
     try {
-      const user = await fetchUser(username);
-      setUser(user);
-      sessionStorage.setItem("relistdepop:user", JSON.stringify(user));
+      const { data } = await fetchUser(username);
+      setUser(data);
+      sessionStorage.setItem("relistdepop:user", JSON.stringify(data));
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   useEffect(() => {
-    let user = sessionStorage.getItem("relistdepop:user");
-    const username = findUsername();
+    let sessionUser = sessionStorage.getItem("relistdepop:user");
+    const userId = Cookies.get("user_id");
+    const userTraits = localStorage.getItem("ajs_user_traits");
 
-    if (!user && username) {
-      handleFetchUsers(username);
+    if (userId) {
+      if (sessionUser) {
+        setUser(JSON.parse(sessionUser));
+      } else if (userTraits) {
+        const user: SessionUser = JSON.parse(userTraits);
+        fetchUserData(user.username);
+      }
     } else {
-      setUser(JSON.parse(user as string) as storedUser);
+      sessionStorage.removeItem("relistdepop:user");
     }
   }, []);
 

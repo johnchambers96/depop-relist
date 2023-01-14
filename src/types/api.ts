@@ -1,12 +1,10 @@
-import { detailedProductType, productType } from "./index";
+import { ProductType } from "./index";
 
-export type productResponse = detailedProductType;
-
-export type productsResponse = {
+export type ProductsResponse = {
   meta: {
     end: boolean;
     last_offset_id: string;
     limit: number;
   };
-  products: productType[];
+  products: ProductType[];
 };

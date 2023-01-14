@@ -1,8 +1,0 @@
-.button__action {
-  border-radius: 50%;
-  @each $size in small, medium, large {
-    &.button--#{$size} {
-      min-width: var(--button-height-#{$size});
-    }
-  }
-}

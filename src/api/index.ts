@@ -1,5 +1,11 @@
-import { productsResponse, productType, storedUser } from "../types";
+import axios, { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
+import {
+  ProductsResponse,
+  DetailedProductType,
+  StoredUser,
+  DetailedProduct,
+} from "../types";
 
 /**
  * Fetch list of products from users store
@@ -9,27 +15,32 @@ import Cookies from "js-cookie";
 export const fetchProducts = async (
   userId: number,
   offSetId?: string
-): Promise<productsResponse> => {
-  // TODO Clean up how query parameters are added
-  return fetch(
-    `https://webapi.depop.com/api/v1/shop/${userId}/products?limit=24${
-      offSetId ? `&offset_id=${offSetId}` : ""
-    }`
-  ).then((res) => res.json().catch((err) => new Error(err)));
+): Promise<AxiosResponse<ProductsResponse>> => {
+  return await axios.get(
+    `https://webapi.depop.com/api/v1/shop/${userId}/products`,
+    {
+      params: {
+        offset_id: offSetId,
+        limit: 24,
+      },
+    }
+  );
 };
 
 /**
  * Fetch more detailed information of single product
  * @returns
  */
-export const fetchProduct = async (slug: string): Promise<productType> => {
-  return fetch(`https://webapi.depop.com/api/v2/products/${slug}/`, {
+export const fetchProduct = async (
+  slug: string
+): Promise<AxiosResponse<DetailedProductType>> => {
+  return await axios.get(`https://webapi.depop.com/api/v2/products/${slug}/`, {
     headers: {
       "content-type": "application/json",
       authorization: `Bearer ${Cookies.get("access_token") as string}`,
       "x-px-cookie": Cookies.get("_px2") as string,
     },
-  }).then((res) => res.json());
+  });
 };
 
 /**
@@ -40,19 +51,19 @@ export const fetchProduct = async (slug: string): Promise<productType> => {
  */
 export const updateProducts = async (
   slug: string,
-  payload: Partial<productType>
-): Promise<void> => {
-  return fetch(`https://webapi.depop.com/api/v1/products/${slug}`, {
-    method: "PUT",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${Cookies.get("access_token") as string}`,
-      "x-px-cookie": Cookies.get("_px2") as string,
-    },
-    body: JSON.stringify(payload),
-  })
-    .then((res) => res.json())
-    .catch((err) => new Error(err));
+  payload: Partial<DetailedProduct>
+): Promise<AxiosResponse<void>> => {
+  return await axios.put(
+    `https://webapi.depop.com/api/v2/products/${slug}`,
+    payload,
+    {
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${Cookies.get("access_token") as string}`,
+        "x-px-cookie": Cookies.get("_px2") as string,
+      },
+    }
+  );
 };
 
 /**
@@ -60,8 +71,8 @@ export const updateProducts = async (
  * @param username
  * @returns
  */
-export const fetchUser = async (username: string): Promise<storedUser> => {
-  return fetch(`https://webapi.depop.com/api/v1/shop/${username}/`)
-    .then((res) => res.json())
-    .catch((err) => console.error(err));
+export const fetchUser = async (
+  username: string
+): Promise<AxiosResponse<StoredUser>> => {
+  return await axios.get(`https://webapi.depop.com/api/v1/shop/${username}/`);
 };
