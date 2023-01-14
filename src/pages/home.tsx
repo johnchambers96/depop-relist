@@ -9,7 +9,7 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { UserContext } from "../context/userContext";
+import { UserContext } from "../context";
 import { ActionButton, ProgressBar } from "../components";
 import { useRelist } from "../hooks";
 
