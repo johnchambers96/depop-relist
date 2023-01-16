@@ -15,7 +15,7 @@ export const ProgressBar: FC<ProgressBarProps> = (props) => {
       </Box>
       <Box sx={{ minWidth: 35 }}>
         <Typography variant="body2" color="text.secondary">{`${Math.round(
-          props.value
+          isNaN(props.value) ? 0 : props.value
         )}%`}</Typography>
       </Box>
     </Box>
