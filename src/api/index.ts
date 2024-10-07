@@ -17,15 +17,22 @@ export const fetchProducts = async (
   offSetId?: string
 ): Promise<AxiosResponse<ProductsResponse>> => {
   return await axios.get(
-    `https://webapi.depop.com/api/v1/shop/${userId}/products`,
+    `https://webapi.depop.com/api/v1/shop/${userId}/products/`,
     {
       params: {
-        offset_id: offSetId,
+        offset_id: offSetId || '',
         limit: 24,
+        lang: "en",
+      },
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${Cookies.get("access_token") as string}`,
       },
     }
   );
 };
+
+// https://webapi.depop.com/api/v1/shop/1974149/products/?lang=en&offset_id=&limit=24
 
 /**
  * Fetch more detailed information of single product
@@ -54,7 +61,7 @@ export const updateProducts = async (
   payload: Partial<DetailedProduct>
 ): Promise<AxiosResponse<void>> => {
   return await axios.put(
-    `https://webapi.depop.com/api/v2/products/${slug}`,
+    `https://webapi.depop.com/api/v2/products/${slug}/`,
     payload,
     {
       headers: {
