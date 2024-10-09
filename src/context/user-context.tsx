@@ -25,7 +25,7 @@ export const UserProvider: FC = ({ children }) => {
 
   useEffect(() => {
     let sessionUser = sessionStorage.getItem("relistdepop:user");
-    const userId = Cookies.get("user_id");
+    const userId = Cookies?.get("user_id") || Cookies?.get("ajs_user_id");
     const userTraits = localStorage.getItem("ajs_user_traits");
 
     if (userId) {
